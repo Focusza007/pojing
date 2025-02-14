@@ -213,7 +213,7 @@ document.getElementById('levelSelect').value = level;
     }
   });
   function goHome() {
-    window.location.href = "home2.html"; // เปลี่ยนลิงก์ไปหน้าที่ต้องการ
+    window.location.href = "index.html"; // เปลี่ยนลิงก์ไปหน้าที่ต้องการ
 }
 function setLevel(level) {
     if (level === "2") {
