@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>เกมตารางกดสี</title>
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Mitr:wght@300&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="Nightmare.css">
+</head>
+<body>
+  <div id="gameContent">
+  <div class="image-container">
+    <img src="รูป/story (1).png" alt="Animated Image" class="img">
+  </div>
+  
+  <div id="controls">
+    <label class="font-size_40px">โหมด</label><label class="red">ฝันร๊าย</label><label class="red">ฝันร้าย</label>
+    <div></div>
+    
+    <select id="levelSelect">
+      <option value="1">เลเวล 1</option>
+      <option value="2">เลเวล 2</option>
+      <option value="3">เลเวล 3</option>
+      <option value="4">เลเวล 4</option>
+      <option value="5">เลเวล 5</option>
+  </select>
+  
+  <button onclick="resetSettings()">รีเซ็ต</button>
+    <p id="values"></p>
+    <button id="startButton">เริ่มเกม</button>
+    <button id="pauseButton" disabled>รีเซ็ตเกม</button>
+  </div>
+  
+  <div id="gameContainer">
+    <button id="toggleButton">⬇</button>
+
+<!-- ส่วนแสดงค่า -->
+<div id="values"></div>
+
+    <div id="grid"></div>
+    <div id="status">
+      <span id="score">คะแนน: 0 </span>
+      <span id="timer">เวลา: 0 วินาที</span>
+    </div>
+    
+    <div id="countdown"></div>
+    <div id="lives">
+      <div class="life"><span>❤</span></div>
+      <div class="life"><span>❤</span></div>
+      <div class="life"><span>❤</span></div>
+      <div class="life"><span>❤</span></div>
+      <div class="life"><span>❤</span></div>
+    </div>
+    <div id="coin-display" class="coin-display">เหรียญ: 0</div>
+  </div>
+ 
+  <button id="reset-coin-btn">เพิ่มเหรียญ</button>
+  <button id="toggleProtectedHeartsButton" style="display: none;">เปิดการป้องกันหัวใจ</button>
+  <button id="protectHeartButton" style="display: none;">ป้องกันหัวใจ</button>
+  <button id="protectSpecialHeartButton">ป้องกันพิเศษ</button>
+  <button id="doubleScoreButton" class="game-btn" style="display: none;">🔥 เพิ่มคะแนน x2</button>
+<button id="disableDoubleButton" class="game-btn" style="display: none;">❌ ปิด x2</button>
+<button id="autoClickButton">Auto Click (0s)</button>
+<button id="increaseDefaultTimeButton" style="display: none;">เพิ่มเวลา (+5s)</button>
+<button id="decreaseDefaultTimeButton" style="display: none;">ลดเวลา (-5s)</button>
+<button id="nextLevelBtn" class="summary-btn"  onclick="nextLevel()">➡️ Next Level</button>
+<button class="home-button" onclick="goHome()">🏠 Home</button>
+  <script src="Nightmare.js">
+  </script>
+  
+</body>
+</html>

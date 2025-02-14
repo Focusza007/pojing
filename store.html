@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ร้านค้าในเกม - Dark Mode</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: radial-gradient(circle, #1e1e1e, #121212);
+            color: white;
+            text-align: center;
+            margin: 0;
+        }
+
+        .container {
+    max-width: 800px;
+    margin: 50px auto;
+    padding: 20px;
+    background: rgba(20, 20, 20, 0.8);
+    border-radius: 15px;
+    box-shadow: 0 0 15px rgba(255, 223, 0, 0.1);
+
+    position: sticky;  /* ✅ ติดอยู่เมื่อเลื่อน */
+    top: 60px;         /* ระยะห่างจากด้านบน (เว้นที่ให้เหรียญ) */
+    z-index: 999;      /* อยู่เหนือเนื้อหาอื่น */
+}
+
+
+        .coin-display {
+    font-size: 24px;
+    margin-bottom: 20px;
+    color: #ffdd00;
+    position: fixed; /* ✅ ติดอยู่ด้านบน */
+    top: 10px;        /* ระยะห่างจากขอบบน */
+    right: 20px;      /* ระยะห่างจากขอบขวา */
+    background: rgba(0, 0, 0, 0.7); /* พื้นหลังโปร่งใส */
+    padding: 10px 15px;
+    border-radius: 10px;
+    z-index: 1000;    /* ให้อยู่เหนือทุกอย่าง */
+    box-shadow: 0 0 10px rgba(255, 223, 0, 0.5); /* เงาสวย ๆ */
+}
+
+
+        .shop-items {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+
+        .item {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            transition: transform 0.2s ease-in-out, box-shadow 0.3s ease;
+            box-shadow: 0 0 8px rgba(255, 255, 255, 0.1);
+        }
+
+        .item:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 15px rgba(255, 223, 0, 0.3); /* ใช้สีเหลือง */
+            background: rgba(255, 223, 0, 0.1); /* สีเหลืองนุ่มนวล */
+        }
+
+        img {
+            width: 100px;
+            height: auto;
+            filter: drop-shadow(0px 0px 5px yellow); /* เพิ่มเงาสีเหลือง */
+        }
+
+        .item h3 {
+            margin: 10px 0;
+            color: #ffdd00; /* เปลี่ยนสีเป็นเหลือง */
+        }
+
+        .item p {
+            font-size: 18px;
+            color: #bbb;
+        }
+
+        .item button {
+            background: #ffdd00; /* เปลี่ยนสีปุ่มเป็นเหลือง */
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+            border-radius: 5px;
+            font-weight: 600;
+            color: black;
+            transition: background 0.3s ease-in-out, transform 0.2s;
+            box-shadow: 0 0 8px rgba(255, 223, 0, 0.2); /* เพิ่มเงาสีเหลือง */
+        }
+
+        .item button:hover {
+            background: #ffcc00; /* สีเหลืองเข้มขึ้น */
+            transform: scale(1.05);
+            box-shadow: 0 0 15px rgba(255, 223, 0, 0.4); /* สีเหลืองเข้มขึ้น */
+        }
+
+        .item button:active {
+            transform: scale(0.95);
+        }
+
+        h1 {
+            color: #ffdd00; /* เปลี่ยนสีเป็นเหลือง */
+            font-weight: 600;
+        }
+        .protection-bar-container {
+    width: 100%;
+    height: 20px;
+    background-color: #ddd;
+    border-radius: 10px;
+    margin-top: 10px;
+    overflow: hidden;
+    box-shadow: inset 0 0 5px rgba(0,0,0,0.3);
+}
+
+.protection-bar {
+    height: 100%;
+    width: 0%;
+    background-color: #00aaff;
+    transition: width 0.3s ease; 
+}
+.home-button {
+            position: fixed;
+            top: 100px;
+            right: 20px;
+            background: linear-gradient(45deg, #ffcc00, #ff8800);
+            color: black;
+            padding: 12px 18px;
+            border-radius: 10px;
+            font-size: 18px;
+            font-weight: bold;
+            border: none;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.3s;
+            box-shadow: 0 4px 8px rgba(255, 200, 0, 0.5);
+            overflow: hidden;
+        }
+
+        .home-button:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 12px rgba(255, 200, 0, 0.7);
+        }
+
+        .home-button:active {
+            transform: scale(0.95);
+            box-shadow: 0 2px 4px rgba(255, 200, 0, 0.4);
+        }
+    </style>
+</head>
+<body>
+ <p class="coin-display"id="coin-display">💰 เหรียญของคุณ: <span id="coin-count">0</span></p>
+ 
+    <div class="container">
+        <h1>🏪 ร้านค้าในเกม</h1>
+      
+
+        <div class="shop-items">
+            
+            <div class="item">
+                <img src="รูป/—Pngtree—coin pixel art illustration suitable_8533568.png" alt="Item 1">
+                <h3>🪙 โบนัสเหรียญ</h3>
+                <h4>รายละเอียด<h3>
+                    <h6>ใครอยากเป็นเศรษฐี</h6>
+                <p id="upgrade-cost-display">ราคา: 50 เหรียญ</p>
+                <button id="upgrade-coin-btn">💰 อัปเกรดเหรียญ</button>
+              
+            </div>
+            <div class="item">
+                <img src="รูป/upscalemedia-transformed.png" alt="Item 2" class="lol">
+                <h3>🛡️ โล่อัศวิน</h3>
+                <h4>รายละเอียด<h3>
+                    <h6>ก็แค่โล่ธรรมดา</h6>
+                <p id="protectionPrice">ราคา: 30 เหรียญ</p>
+                <button id="protectHeartButton">ป้องกันหัวใจ</button>
+<div class="protection-bar-container">
+    <div class="protection-bar" id="protectionBar"></div>
+    
+</div>
+
+
+            </div>
+            
+            <div class="item">
+                <img src="รูป/Pixellet TH (1)-Photoroom.png" alt="Item"> 
+                <h3>🧪 ยาเพิ่มพลังx2</h3>
+                <h4>รายละเอียด<h3>
+                    <h6>M-150</h6>
+                <p id="priceText">ราคา: 5000 เหรียญ</p>
+                <p id="purchaseStatus"></p>
+                <button id="doubleScoreButton" class="game-btn">🔥 เพิ่มคะแนน x2</button>
+
+            </div>
+            <div class="item">
+                <img src="รูป/ดีไซน์ที่ยังไม่ได้ตั้งชื่อ (3)-Photoroom.png" alt="Item 4">
+                <h3>🦾 โล่ศักดิ์สิทธิ์ที่มีรอยร้าว</h3>
+                <h4>รายละเอียด<h3>
+                    <h6>โล่จะไม่สามาตรใช้ได้จนกว่าคุณจะมีพลังป้องกันที่สู่ที่สุด</h6>
+                <p>ราคา: 70 เหรียญ</p>
+                <button id="addLimitButton">เพิ่มจำนวนครั้ง (+)</button>
+            </div>
+            <div class="item">
+                <img src="รูป/—Pngtree—broken clock_5937961.png" alt="Item 4">
+                <h3>🦾 นาฬิกาของเทพพังๆ</h3>
+                <h4>รายละเอียด<h3>
+                    <h6>ถึงมันจะพังแต่ก็ยังเคยเป็นของเทพมาก่อนมีนอาจมีประโยชกับคุณก็ได้นะ</h6>
+                <p>ราคา: 500 เหรียญ</p>
+                <p id="ok"></p>
+                <button id="autoClickButton" style="display: none;" >Auto Click (0s)</button>
+                <button id="increaseDefaultTimeButton">เพิ่มเวลา (+5s)</button>
+
+            </div>
+            
+              <button class="home-button" onclick="goHome()">🏠 Home</button>
+        </div>
+    </div>
+
+    <script>
+      
+    
+     const ko = document.getElementById('ok');
+       document.addEventListener('DOMContentLoaded', () => { 
+    let coins = parseInt(localStorage.getItem('coins')) || 0;
+    let coinBonus = parseInt(localStorage.getItem('coinBonus')) || 0;
+    let upgradeCost = localStorage.getItem('upgradeCost') ? parseInt(localStorage.getItem('upgradeCost')) : 40;
+
+    const coinDisplay = document.getElementById('coin-display');
+    const upgradeCostDisplay = document.getElementById('upgrade-cost-display');
+    const upgradeButton = document.getElementById('upgrade-coin-btn');
+    const resetBonusButton = document.getElementById('reset-bonus-btn');
+   
+    
+
+    
+    function updateDisplay() {
+        coinDisplay.textContent = `เหรียญ: ${coins} (โบนัส: ${coinBonus}%)`;
+
+        if (coinBonus >= 200) {
+            
+            upgradeCostDisplay.textContent = "ถึงขีดจำกัดแล้ว";
+            upgradeButton.disabled = true; // ปิดปุ่มอัปเกรด
+        } else {
+            upgradeCostDisplay.textContent = `ราคา: ${upgradeCost} เหรียญ`;
+            upgradeButton.disabled = false;
+        }
+    }
+  
+    upgradeButton.addEventListener('click', () => {  
+        if (coinBonus >= 200) {
+            alert('โบนัสถึงขีดสุดแล้ว!');
+            return;
+        }
+
+        if (coins >= upgradeCost) {
+            coins -= upgradeCost;
+            localStorage.setItem('coins', coins);
+            updateDisplay();
+
+            coinBonus += 25;
+            if (coinBonus > 200) coinBonus = 200;
+            localStorage.setItem('coinBonus', coinBonus);
+            updateDisplay();
+
+            upgradeCost *= 4;
+            localStorage.setItem('upgradeCost', upgradeCost);
+            updateDisplay();
+        } else {
+            alert('เหรียญไม่พอ!');
+        }
+    });
+
+    
+  
+  
+   
+            
+            updateDisplay();
+           
+});
+
+  
+function updateCoinDisplay() {
+    let coins = parseInt(localStorage.getItem('coins')) || 0;
+    document.getElementById("coin-count").textContent = coins; // ✅ แสดงเหรียญล่าสุด
+
+    let protectionMultiplier = parseInt(localStorage.getItem('protectionMultiplier')) || 2;
+    let nextCost = 40 * protectionMultiplier; 
+    document.getElementById("protect-cost-display").textContent = `ราคา: ${nextCost} เหรียญ`;
+}
+
+// ฟังก์ชันสำหรับอัปเดต UI ของหัวใจและแถบพลัง
+function updateProtectedHeartsUI() {
+    const protectedHearts = parseInt(localStorage.getItem('protectedHearts')) || 0;
+    const protectionMultiplier = parseInt(localStorage.getItem('protectionMultiplier')) || 2;
+    const cost = 40 * protectionMultiplier; // ราคาที่ต้องจ่ายครั้งถัดไป
+    const lifeElements = document.querySelectorAll('.life');
+    const protectButton = document.getElementById("protectHeartButton");
+    const protectionBar = document.getElementById("protectionBar");
+    const priceTag = document.getElementById("protectionPrice"); // ✅ เพิ่มตัวเลือก id ใหม่
+
+    // อัปเดตราคาใน UI
+    priceTag.textContent = `ราคา: ${cost} เหรียญ`;
+
+    // ✅ อัปเดตสถานะหัวใจ
+    lifeElements.forEach((life, index) => {
+        if (index < protectedHearts) {
+            life.style.backgroundColor = 'blue';
+            life.setAttribute("data-protected", "true");
+        } else {
+            life.style.backgroundColor = 'transparent';
+            life.removeAttribute("data-protected");
+        }
+    });
+
+    // ✅ คำนวณแถบความคืบหน้า6จาก protectedHearts โดยตรง
+    const progressPercentage = (protectedHearts / 5) * 100;
+    protectionBar.style.width = `${progressPercentage}%`;
+
+    // ✅ ตรวจสอบและแสดงข้อความ "ป้องกันเต็มแล้ว!" เมื่อโหลดหน้า
+    if (protectedHearts >= 5) {
+        protectButton.disabled = true;
+        protectButton.textContent = "ป้องกันเต็มแล้ว!";
+    } else {
+        protectButton.disabled = false;
+        protectButton.textContent = "ป้องกันหัวใจ";
+    }
+}
+ 
+// ฟังก์ชันสำหรับเพิ่มการป้องกันหัวใจ
+
+
+let protectionMultiplier = parseInt(localStorage.getItem('protectionMultiplier')) || 2;
+
+document.getElementById("protectHeartButton").addEventListener("click", function() {
+    let protectedHearts = parseInt(localStorage.getItem('protectedHearts')) || 0;
+    let coins = parseInt(localStorage.getItem('coins')) || 0;
+    let cost = 40* protectionMultiplier; // ราคาตามลำดับ x2, x4, x8...
+
+    if (coins >= cost) {
+        coins -= cost;
+        protectedHearts++;
+
+        localStorage.setItem('coins', coins);
+        localStorage.setItem('protectedHearts', protectedHearts);
+
+        
+
+        protectionMultiplier *= 2; // คูณ 2 ในแต่ละครั้ง
+        localStorage.setItem('protectionMultiplier', protectionMultiplier); // บันทึกค่าตัวคูณ
+
+        updateProtectedHeartsUI();
+        location.reload(); // รีหน้าใหม่ทันที
+    } else {
+        alert("เหรียญไม่พอ!");
+    }
+});
+
+// รีเซ็ตตัวคูณเมื่อกดรีเซ็ตการป้องกัน
+
+
+// ✅ โหลดค่าที่บันทึกไว้เมื่อโหลดหน้า
+document.addEventListener('DOMContentLoaded', () => {
+    updateProtectedHeartsUI();
+    updateCoinDisplay(); // เรียกแสดงเหรียญเมื่อโหลดหน้า
+});
+let isDoubleScoreActive = localStorage.getItem('isDoubleScoreActive') === 'true';
+let coins = parseInt(localStorage.getItem('coins')) || 0;
+
+const doubleScoreButton = document.getElementById('doubleScoreButton');
+
+const coinDisplay = document.getElementById('coin-count');
+
+const doubleScoreCost = 5000; // ✅ ราคาการซื้อคะแนนคูณ 2
+
+// อัปเดตแสดงจำนวนเหรียญ
+function updateCoinDisplay() {
+    coinDisplay.textContent = coins;
+}
+
+doubleScoreButton.disabled = isDoubleScoreActive;
+
+
+// ดึงสถานะการซื้อจาก localStorage
+window.onload = () => {
+    const purchaseStatus = localStorage.getItem('purchaseStatus');
+    const isDoubleScoreActive = localStorage.getItem('isDoubleScoreActive') === 'true';
+    const doubleScoreButton = document.getElementById('doubleScoreButton');
+    const purchaseStatusElement = document.getElementById('purchaseStatus');
+
+    if (isDoubleScoreActive) {
+        doubleScoreButton.textContent = "🔥 คะแนน x2 ถูกเปิดใช้งานแล้ว";
+        doubleScoreButton.disabled = true;
+        purchaseStatusElement.textContent = "การซื้อสำเร็จ!";
+    } else {
+        doubleScoreButton.textContent = "🔥 เพิ่มคะแนน x2";
+        doubleScoreButton.disabled = false;  // เปิดให้กดได้ถ้ายังไม่เปิดใช้งาน
+        purchaseStatusElement.textContent = ""; // ลบข้อความแจ้งเตือนเก่า
+    }
+};
+
+// ✅ ฟังก์ชันสำหรับการกดปุ่มซื้อคะแนน x2
+document.getElementById('doubleScoreButton').onclick = () => { 
+    const doubleScoreCost = 5000;  // สมมติว่าต้องการ 5000 เหรียญ
+    let coins = parseInt(localStorage.getItem('coins')) || 0;
+
+    if (coins >= doubleScoreCost) { // ✅ ตรวจสอบเหรียญเพียงพอ
+        coins -= doubleScoreCost;   // ✅ หักเหรียญ
+        localStorage.setItem('coins', coins);
+        updateCoinDisplay();        // ✅ อัปเดตการแสดงผลเหรียญทันที
+
+        localStorage.setItem('isDoubleScoreActive', 'true');
+        localStorage.setItem('purchaseStatus', 'success');
+
+        document.getElementById('purchaseStatus').textContent = "การซื้อสำเร็จ!";
+        document.getElementById('doubleScoreButton').textContent = "🔥 คะแนน x2 ถูกเปิดใช้งานแล้ว";
+        document.getElementById('doubleScoreButton').disabled = true;  // ปิดปุ่มหลังซื้อ
+        location.reload(); // รีหน้าใหม่ทันที
+        alert("✅ เปิดคะแนนคูณ 2 สำเร็จ!");
+    } else {
+        alert("❌ เหรียญไม่พอ! ต้องการ 30,000 เหรียญ");
+    }
+};
+
+// ✅ แสดงเหรียญเมื่อโหลดหน้า
+document.addEventListener('DOMContentLoaded', updateCoinDisplay);
+let remainingClicks = parseInt(localStorage.getItem("remainingClicks")) || 0;
+let protectedHearts = 5;
+let protectedSpecialHearts = parseInt(localStorage.getItem("protectedSpecialHearts")) || 0;
+
+const button = document.getElementById("protectSpecialHeartButton");
+const addLimitButton = document.getElementById("addLimitButton");
+
+// อัปเดตข้อความปุ่ม (เฉพาะเมื่อมีปุ่มป้องกันพิเศษ)
+function updateButtonText() {
+    if (button) {
+        button.textContent = `ป้องกันพิเศษ (${remainingClicks} ครั้ง)`;
+        button.disabled = remainingClicks === 0 || protectedSpecialHearts >= document.querySelectorAll('.life').length;
+    }
+}
+
+// โหลดค่าเริ่มต้น
+updateButtonText();
+
+// ฟังก์ชันเมื่อกดปุ่มป้องกันพิเศษ
+if (button) {
+    button.addEventListener("click", function () {
+        const lifeElements = document.querySelectorAll('.life');
+
+        if (protectedSpecialHearts < lifeElements.length && remainingClicks > 0) {
+            lifeElements[protectedSpecialHearts].style.backgroundColor = 'purple';
+            lifeElements[protectedSpecialHearts].setAttribute("data-special-protected", "true");
+            protectedSpecialHearts++;
+
+            remainingClicks--;
+            localStorage.setItem("remainingClicks", remainingClicks);
+            localStorage.setItem("protectedSpecialHearts", protectedSpecialHearts);
+            updateButtonText();
+        }
+    });
+}
+
+
+
+
+
+doubleScoreButton.disabled = isDoubleScoreActive;
+
+
+document.getElementById("addLimitButton").addEventListener("click", function() {
+    let coins = parseInt(localStorage.getItem('coins')) || 0;
+    let cost = 70; // ราคาหักเหรียญ
+
+    if (coins >= cost) {
+        coins -= cost;
+        localStorage.setItem('coins', coins);
+        updateCoinDisplay();
+    } else {
+        alert("เหรียญไม่พอ!");
+    }
+    location.reload(); // รีเฟรชหน้าใหม่ทันที
+});
+// ฟังก์ชันเพิ่มจำนวนครั้ง (หน้าอื่นก็สามารถใช้ได้)
+if (addLimitButton) {
+    addLimitButton.addEventListener("click", function () {
+        remainingClicks += 1;
+        localStorage.setItem("remainingClicks", remainingClicks);
+    });
+}
+
+let autoClickActive = localStorage.getItem("autoClickActive") === "true";
+let autoClickInterval, autoClickTimer;
+
+// ✅ โหลดค่าเวลาเริ่มต้นและเวลาที่เหลือ
+let defaultTime = parseInt(localStorage.getItem("defaultTime")) || 5;
+let timeLeft = parseInt(localStorage.getItem("timeLeft")) || defaultTime;
+
+// 🚀 เริ่มหรือหยุด Auto Click เมื่อกดปุ่ม
+document.getElementById("autoClickButton").addEventListener("click", () => { 
+    if (autoClickActive) {
+        stopAutoClick();  // ⏸️ หยุด Auto Click และบันทึกเวลาที่เหลือ
+    } else if (timeLeft > 0) {
+        startAutoClick(); // ▶️ เริ่ม Auto Click จากเวลาที่เหลือ (ถ้าเหลือเวลา)
+    }
+});
+
+// ✅ ฟังก์ชันเริ่ม Auto Click
+function startAutoClick() {
+    autoClickActive = true;
+    localStorage.setItem("autoClickActive", "true");
+    localStorage.setItem("timeLeft", timeLeft); // บันทึกเวลาปัจจุบัน
+
+    const button = document.getElementById("autoClickButton");
+    button.style.backgroundColor = "green";
+    button.textContent = `Auto Click (${timeLeft}s)`;
+    button.disabled = false; // เปิดปุ่มในกรณีที่เคยถูกปิด
+
+    // ⚡ เริ่มคลิกอัตโนมัติ
+    autoClickInterval = setInterval(() => {
+        document.querySelectorAll(".cell.green").forEach(cell => {
+            cell.click();
+        });
+    }, 100);
+
+    // ⏱️ นับถอยหลัง
+    autoClickTimer = setInterval(() => {
+        timeLeft--;
+        button.textContent = `Auto Click (${timeLeft}s)`;
+        localStorage.setItem("timeLeft", timeLeft); // บันทึกเวลาที่เหลือทุกวินาที
+
+        if (timeLeft <= 0) {
+            stopAutoClick();
+            disableAutoClickButton(); // 🔒 ปิดปุ่มเมื่อหมดเวลา
+        }
+    }, 1000);
+}
+
+// ✅ ฟังก์ชันหยุด Auto Click
+function stopAutoClick() {
+    clearInterval(autoClickInterval);
+    clearInterval(autoClickTimer);
+    autoClickActive = false;
+    
+    localStorage.setItem("autoClickActive", "false");
+    localStorage.setItem("timeLeft", timeLeft);
+
+    updateAutoClickButton(true); // ส่งค่า true เพื่อแสดงเวลาที่เหลือ
+    syncAcrossPages();
+}
+
+
+// ✅ ฟังก์ชันปิดปุ่มเมื่อหมดเวลา
+function disableAutoClickButton() {
+    const button = document.getElementById("autoClickButton");
+    button.disabled = true; // 🔒 ปิดปุ่ม
+    timeLeft = 0;
+    button.textContent = "โปรดเพื่มเวลาauto"; 
+    localStorage.setItem("buttonDisabled", "true"); // บันทึกสถานะปุ่ม
+    localStorage.setItem("timeLeft", timeLeft);
+}
+
+// ✅ เพิ่มเวลา
+document.getElementById("increaseDefaultTimeButton").addEventListener("click", () => {
+    if (autoClickActive) {
+        alert("ไม่สามารถเพิ่มเวลาได้ขณะ Auto Click กำลังทำงาน!");
+        return; // ❌ หยุดการทำงานถ้า Auto Click กำลังทำงาน
+    }
+    location.reload(); // รีเฟรชหน้าใหม่ทันที
+    let coins = parseInt(localStorage.getItem('coins')) || 0; // ✅ โหลดเหรียญปัจจุบัน
+    const coinCost = 500; // ✅ ค่าใช้จ่าย 50 เหรียญ
+
+    if (coins < coinCost) {
+        alert("เหรียญไม่เพียงพอ! ต้องการอย่างน้อย 50 เหรียญ");
+        return; // ❌ หยุดถ้าเหรียญไม่พอ
+    }
+
+    // ✅ หักเหรียญ 50 เหรียญ
+    coins -= coinCost;
+    localStorage.setItem('coins', coins); // บันทึกค่าใหม่
+
+    // ✅ เพิ่มเวลา
+    timeLeft += 5;
+    saveDefaultTime();
+    updateAutoClickButton();
+    syncAcrossPages();
+    enableAutoClickButton();
+
+    updateCoinDisplay(); // ✅ อัปเดตแสดงผลเหรียญใหม่
+});
+
+
+
+// ✅ บันทึกเวลาเริ่มต้น
+function saveDefaultTime() {
+    localStorage.setItem("defaultTime", defaultTime);
+    localStorage.setItem("timeLeft", timeLeft);
+}
+
+// ✅ อัปเดตปุ่มแสดงเวลา
+function updateAutoClickButton(showTimeLeft = false) {
+    const button = document.getElementById("autoClickButton");
+    button.style.backgroundColor = autoClickActive ? "green" : "gray";
+
+    // ✅ แสดงเวลาที่เหลือถ้าได้รับพารามิเตอร์ showTimeLeft = true
+    const displayTime = showTimeLeft ? timeLeft : (autoClickActive ? timeLeft : defaultTime);
+    ko.textContent = `Auto Click (${timeLeft}s)`;
+
+    if (timeLeft <= 0) {
+        disableAutoClickButton(); // 🔒 ปิดปุ่มถ้าเวลา = 0
+    }
+}
+
+// ✅ เปิดปุ่มใหม่ (ใช้หลังเพิ่มเวลา)
+function enableAutoClickButton() {
+    const button = document.getElementById("autoClickButton");
+    button.disabled = false;
+    button.style.backgroundColor = "gray";
+    button.textContent = `Auto Click (${timeLeft}s)`;
+
+    localStorage.setItem("buttonDisabled", "false"); // บันทึกสถานะปุ่ม
+}
+
+// ✅ ซิงค์ระหว่างหน้า
+function syncAcrossPages() {
+    localStorage.setItem("syncTime", Date.now());
+}
+
+window.addEventListener("storage", (event) => {
+    if (event.key === "defaultTime") {
+        defaultTime = parseInt(localStorage.getItem("defaultTime")) || 0;
+        updateAutoClickButton();
+    }
+    if (event.key === "autoClickActive" || event.key === "timeLeft") {
+        autoClickActive = localStorage.getItem("autoClickActive") === "true";
+        timeLeft = parseInt(localStorage.getItem("timeLeft")) || defaultTime;
+        updateAutoClickButton();
+    }
+});
+
+// ✅ โหลดค่าจาก localStorage เมื่อหน้าเว็บโหลด
+window.onload = () => {
+    defaultTime = parseInt(localStorage.getItem("defaultTime")) || 0;
+    timeLeft = parseInt(localStorage.getItem("timeLeft")) || defaultTime;
+    autoClickActive = localStorage.getItem("autoClickActive") === "true";
+
+    if (localStorage.getItem("buttonDisabled") === "true" || timeLeft <= 0) {
+        disableAutoClickButton(); // 🔒 ปิดปุ่มถ้าเคยหมดเวลา
+    } else if (autoClickActive && timeLeft > 0) {
+       startAutoClick(); // เริ่ม Auto Click ต่อจากเวลาที่เหลือ
+    } else {
+        updateAutoClickButton();
+    }
+}; 
+function goHome() {
+    window.location.href = "home2.html"; // เปลี่ยนลิงก์ไปหน้าที่ต้องการ
+}
+
+ </script>
+
+</body>
+</html>

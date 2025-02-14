@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+   <meta name="viewport" content="width=400, user-scalable=no">
+
+    <title>Multimode Click Game</title>
+   
+    <link rel="stylesheet" href="Easy.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: radial-gradient(circle, #1e1e1e, #121212);
+            color: white;
+            text-align: center;
+            margin: 0;
+        }
+
+        .container {
+    width: 400px;    /* ขนาดคงที่ */
+    max-width: 400px; 
+    margin: 50px auto;
+    padding: 20px;
+    background: rgba(20, 20, 20, 0.8);
+    border-radius: 15px;
+    box-shadow: 0 0 15px rgba(255, 223, 0, 0.1);
+}
+
+        .coin-display {
+            font-size: 24px;
+            margin-bottom: 20px;
+            color: #ffdd00; /* เปลี่ยนสีเป็นเหลือง */
+        }
+
+        .shop-items {
+    display: grid;
+    grid-template-columns: 200px 200px; /* กำหนดขนาดคงที่ */
+    gap: 20px;
+    justify-content: center; /* จัดให้อยู่ตรงกลาง */
+}
+
+
+.item button {
+    background: #ffdd00;
+    padding: 10px 20px;
+    font-size: 16px;
+    white-space: nowrap; /* ป้องกันการตัดบรรทัด */
+}
+
+        .item:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 15px rgba(255, 223, 0, 0.3); /* ใช้สีเหลือง */
+            background: rgba(255, 223, 0, 0.1); /* สีเหลืองนุ่มนวล */
+        }
+
+        img {
+            width: 150px;
+            height: auto;
+            filter: drop-shadow(0px 0px 5px yellow); /* เพิ่มเงาสีเหลือง */
+            transition: transform 0.2s, background-color 0.3s;
+    z-index: 1000;
+
+    animation: pulse 2s infinite, float 3s infinite ease-in-out;
+        }
+
+        .item h3 {
+            margin: 10px 0;
+            color: #ffdd00; /* เปลี่ยนสีเป็นเหลือง */
+        }
+
+        .item p {
+            font-size: 18px;
+            color: #bbb;
+        }
+
+        .item button {
+            background: #ffdd00; /* เปลี่ยนสีปุ่มเป็นเหลือง */
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+            border-radius: 5px;
+            font-weight: 600;
+            color: black;
+            transition: background 0.3s ease-in-out, transform 0.2s;
+            box-shadow: 0 0 8px rgba(255, 223, 0, 0.2); /* เพิ่มเงาสีเหลือง */
+        }
+
+        .item button:hover {
+            background: #ffcc00; /* สีเหลืองเข้มขึ้น */
+            transform: scale(1.05);
+            box-shadow: 0 0 15px rgba(255, 223, 0, 0.4); /* สีเหลืองเข้มขึ้น */
+        }
+
+        .item button:active {
+            transform: scale(0.95);
+        }
+
+        h1 {
+            color: #ffdd00; /* เปลี่ยนสีเป็นเหลือง */
+            font-weight: 600;
+        }
+        .protection-bar-container {
+    width: 300px;  /* ใช้ขนาดคงที่แทน 100% */
+    height: 20px;
+    background-color: #ddd;
+    border-radius: 10px;
+    margin: 10px auto; /* จัดกึ่งกลาง */
+    overflow: hidden;
+    box-shadow: inset 0 0 5px rgba(0,0,0,0.3);
+}
+
+.protection-bar {
+    height: 100%;
+    width: 0%;
+    background-color: #00aaff;
+    transition: width 0.3s ease; 
+}
+.shop-button {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: #ffdd00;
+    color: black;
+    border: none;
+    padding: 15px 20px;
+    border-radius: 50px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: transform 0.2s, background-color 0.3s;
+    z-index: 1000;
+
+    animation: pulse 2s infinite, float 3s infinite ease-in-out;
+}
+.shop-button:hover {
+    background-color: #ffcc00;
+    transform: scale(1.15);
+}
+
+.shop-button:active {
+    transform: scale(0.95);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+}
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+        box-shadow: 0 0 10px rgba(255, 223, 0, 0.6);
+    }
+    50% {
+        transform: scale(1.1);
+        box-shadow: 0 0 20px rgba(255, 223, 0, 0.9);
+    }
+    100% {
+        transform: scale(1);
+        box-shadow: 0 0 10px rgba(255, 223, 0, 0.6);
+    }
+}
+
+@keyframes float {
+    0% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-5px);
+    }
+    100% {
+        transform: translateY(0);
+    }
+}
+
+    </style>
+</head>
+<body>
+    <img src="รูป/ดีไซน์ที่ยังไม่ได้ตั้งชื่อ (2).png" alt="">
+    <div id="home">
+        <h1>Multimode Click Game</h1>
+        <p>Choose a mode:</p>
+        <button class="Green" onclick="Easy()">Easy</button>
+        <button class="Blue" onclick="Normal()">Normal</button>
+        <button class="Orange"onclick="Hard()">Hard</button>
+        <button class="red" onclick="Nightmare()">Nightmare</button>
+        <button class="Black" onclick="Sus_Mode()">Sus_Mode</button>
+        <p class="coin-display"onclick="goToShop()">💰 เหรียญของคุณ: <span id="coin-count">0</span></p>
+       
+        
+            <h3>🛡️</h3>
+            <p id="protectionPrice" style="display: none;"></p>
+            <button id="protectHeartButton" style="display: none;">ป้องกันหัวใจ</button>
+<div class="protection-bar-container">
+<div class="protection-bar" id="protectionBar"></div>
+
+</div>
+<button id="resetProtectButton" style="display: none;"></button>
+
+        </div>
+       
+       
+            <button id="upgrade-coin-btn" style="display: none;">💰 อัปเกรดเหรียญ</button>
+            <button class="shop-button" onclick="goToShop()">🛒 ร้านค้า</button>
+
+
+    <script>
+        function Easy() {
+    window.location.href = 'Easy.html'; // เปลี่ยนเป็นลิงก์หน้าร้านค้าของคุณ
+}
+           function Normal() {
+    window.location.href = 'Normal.html'; // เปลี่ยนเป็นลิงก์หน้าร้านค้าของคุณ
+}
+function Hard() {
+    window.location.href = 'Hard.html'; // เปลี่ยนเป็นลิงก์หน้าร้านค้าของคุณ
+}
+function Nightmare() {
+    window.location.href = 'Nightmare.html'; // เปลี่ยนเป็นลิงก์หน้าร้านค้าของคุณ
+}
+function Sus_Mode() {
+    window.location.href = 'Sus_Mode.html'; // เปลี่ยนเป็นลิงก์หน้าร้านค้าของคุณ
+}
+       function goToShop() {
+    window.location.href = 'store.html'; // เปลี่ยนเป็นลิงก์หน้าร้านค้าของคุณ
+}
+document.addEventListener('DOMContentLoaded', () => { 
+    let coins = parseInt(localStorage.getItem('coins')) || 0;
+    let coinBonus = parseInt(localStorage.getItem('coinBonus')) || 0;
+    let upgradeCost = localStorage.getItem('upgradeCost') ? parseInt(localStorage.getItem('upgradeCost')) : 40;
+
+    const coinDisplay = document.getElementById('coin-display');
+    const upgradeCostDisplay = document.getElementById('upgrade-cost-display');
+    const upgradeButton = document.getElementById('upgrade-coin-btn');
+    const resetBonusButton = document.getElementById('reset-bonus-btn');
+    const deductButton = document.getElementById('deductButton');
+const homeButton = document.getElementById('homeButton');
+const offButton = document.getElementById('off');
+
+   
+    function updateDisplay() {
+        coinDisplay.textContent = `เหรียญ: ${coins} (โบนัส: ${coinBonus}%)`;
+
+        if (coinBonus >= 200) {
+            
+            upgradeCostDisplay.textContent = "ถึงขีดจำกัดแล้ว";
+            upgradeButton.disabled = true; // ปิดปุ่มอัปเกรด
+        } else {
+            upgradeCostDisplay.textContent = `ราคา: ${upgradeCost} เหรียญ`;
+            upgradeButton.disabled = false;
+        }
+    }
+  
+    upgradeButton.addEventListener('click', () => {  
+        if (coinBonus >= 200) {
+            alert('โบนัสถึงขีดสุดแล้ว!');
+            return;
+        }
+
+        if (coins >= upgradeCost) {
+            coins -= upgradeCost;
+            localStorage.setItem('coins', coins);
+            updateDisplay();
+
+            coinBonus += 25;
+            if (coinBonus > 200) coinBonus = 200;
+            localStorage.setItem('coinBonus', coinBonus);
+            updateDisplay();
+
+            upgradeCost *= 4;
+            localStorage.setItem('upgradeCost', upgradeCost);
+            updateDisplay();
+        } else {
+            alert('เหรียญไม่พอ!');
+        }
+    });
+
+    
+        // ฟังก์ชันสำหรับหักเหรียญ 250 เหรียญ
+       
+        deductButton.addEventListener('click', () => {
+    if (coins >= 250) {
+        coins -= 250;
+        localStorage.setItem('coins', coins); // บันทึกค่าใหม่
+        updateDisplay();
+        alert('หักเหรียญสำเร็จ! คุณสามารถกดปุ่ม home ได้แล้ว');
+
+        homeButton.disabled = false;
+        deductButton.disabled = true;
+    } else {
+        alert('เหรียญไม่เพียงพอ! ต้องมีอย่างน้อย 250 เหรียญ');
+    }
+});
+
+    // ฟังก์ชันสำหรับปุ่ม home
+    homeButton.addEventListener('click', () => {
+        window.location.href = 'index.html'; // นำไปหน้าใหม่ (เปลี่ยนลิงก์ตามที่ต้องการ)
+    });
+    offButton.addEventListener('click', () => {
+        deductButton.disabled = false; // เปิดการใช้งานปุ่ม deductButton
+        homeButton.disabled = true; // ปิดการใช้งานปุ่ม homeButton
+    });
+    homeButton.disabled = true;
+    updateDisplay();
+});
+
+
+function updateCoinDisplay() {
+    let coins = parseInt(localStorage.getItem('coins')) || 0;
+    document.getElementById("coin-count").textContent = coins; 
+
+    let nextCost = 30 * protectionMultiplier; // คำนวณราคาถัดไป
+    document.getElementById("protect-cost-display").textContent = `ราคา: ${nextCost} เหรียญ`;
+}
+// ฟังก์ชันสำหรับอัปเดต UI ของหัวใจและแถบพลัง
+function updateProtectedHeartsUI() {
+    const protectedHearts = parseInt(localStorage.getItem('protectedHearts')) || 0;
+    const protectionMultiplier = parseInt(localStorage.getItem('protectionMultiplier')) || 2;
+    const cost = 30 * protectionMultiplier; // ราคาที่ต้องจ่ายครั้งถัดไป
+    const lifeElements = document.querySelectorAll('.life');
+    const protectButton = document.getElementById("protectHeartButton");
+    const protectionBar = document.getElementById("protectionBar");
+    const priceTag = document.getElementById("protectionPrice"); // ✅ เพิ่มตัวเลือก id ใหม่
+
+    // อัปเดตราคาใน UI
+    priceTag.textContent = `ราคา: ${cost} เหรียญ`;
+
+    // ✅ อัปเดตสถานะหัวใจ
+    lifeElements.forEach((life, index) => {
+        if (index < protectedHearts) {
+            life.style.backgroundColor = 'blue';
+            life.setAttribute("data-protected", "true");
+        } else {
+            life.style.backgroundColor = 'transparent';
+            life.removeAttribute("data-protected");
+        }
+    });
+
+    // ✅ คำนวณแถบความคืบหน้า6จาก protectedHearts โดยตรง
+    const progressPercentage = (protectedHearts / 5) * 100;
+    protectionBar.style.width = `${progressPercentage}%`;
+
+    // ✅ ตรวจสอบและแสดงข้อความ "ป้องกันเต็มแล้ว!" เมื่อโหลดหน้า
+    if (protectedHearts >= 5) {
+        protectButton.disabled = true;
+        protectButton.textContent = "ป้องกันเต็มแล้ว!";
+    } else {
+        protectButton.disabled = false;
+        protectButton.textContent = "ป้องกันหัวใจ";
+    }
+}
+ 
+// ฟังก์ชันสำหรับเพิ่มการป้องกันหัวใจ
+
+
+let protectionMultiplier = parseInt(localStorage.getItem('protectionMultiplier')) || 2;
+
+document.getElementById("protectHeartButton").addEventListener("click", function() {
+    let protectedHearts = parseInt(localStorage.getItem('protectedHearts')) || 0;
+    let coins = parseInt(localStorage.getItem('coins')) || 0;
+    let cost = 30 * protectionMultiplier; // ราคาตามลำดับ x2, x4, x8...
+
+    if (coins >= cost) {
+        coins -= cost;
+        protectedHearts++;
+
+        localStorage.setItem('coins', coins);
+        localStorage.setItem('protectedHearts', protectedHearts);
+
+        
+
+        protectionMultiplier *= 2; // คูณ 2 ในแต่ละครั้ง
+        localStorage.setItem('protectionMultiplier', protectionMultiplier); // บันทึกค่าตัวคูณ
+
+        updateProtectedHeartsUI();
+        location.reload(); // รีหน้าใหม่ทันที
+    } else {
+        alert("เหรียญไม่พอ!");
+    }
+});
+
+// รีเซ็ตตัวคูณเมื่อกดรีเซ็ตการป้องกัน
+
+
+// ✅ โหลดค่าที่บันทึกไว้เมื่อโหลดหน้า
+document.addEventListener('DOMContentLoaded', () => {
+    updateProtectedHeartsUI();
+    updateCoinDisplay(); // เรียกแสดงเหรียญเมื่อโหลดหน้า
+});
+let isDoubleScoreActive = localStorage.getItem('isDoubleScoreActive') === 'true';
+let coins = parseInt(localStorage.getItem('coins')) || 0;
+
+const doubleScoreButton = document.getElementById('doubleScoreButton');
+
+const coinDisplay = document.getElementById('coin-count');
+
+const doubleScoreCost = 30000; // ✅ ราคาการซื้อคะแนนคูณ 2
+
+// อัปเดตแสดงจำนวนเหรียญ
+function updateCoinDisplay() {
+    coinDisplay.textContent = coins;
+}
+
+doubleScoreButton.disabled = isDoubleScoreActive;
+
+
+doubleScoreButton.onclick = () => {
+    if (coins >= doubleScoreCost) { // ✅ ตรวจสอบเหรียญเพียงพอ
+        coins -= doubleScoreCost;   // ✅ หักเหรียญ
+        localStorage.setItem('coins', coins);
+        updateCoinDisplay();        // ✅ อัปเดตการแสดงผลเหรียญทันที
+
+        isDoubleScoreActive = true;
+        localStorage.setItem('isDoubleScoreActive', 'true');
+        doubleScoreButton.disabled = true;
+        
+
+        alert("✅ เปิดคะแนนคูณ 2 สำเร็จ!");
+    } else {
+        alert("❌ เหรียญไม่พอ! ต้องการ 30,000 เหรียญ");
+    }
+    location.reload(); // รีเฟรชหน้าใหม่ทันที
+};
+
+
+// ✅ แสดงเหรียญเมื่อโหลดหน้า
+document.addEventListener('DOMContentLoaded', updateCoinDisplay);
+let remainingClicks = parseInt(localStorage.getItem("remainingClicks")) || 0;
+let protectedHearts = 5;
+let protectedSpecialHearts = parseInt(localStorage.getItem("protectedSpecialHearts")) || 0;
+
+const button = document.getElementById("protectSpecialHeartButton");
+const addLimitButton = document.getElementById("addLimitButton");
+
+// อัปเดตข้อความปุ่ม (เฉพาะเมื่อมีปุ่มป้องกันพิเศษ)
+function updateButtonText() {
+    if (button) {
+        button.textContent = `ป้องกันพิเศษ (${remainingClicks} ครั้ง)`;
+        button.disabled = remainingClicks === 0 || protectedSpecialHearts >= document.querySelectorAll('.life').length;
+    }
+}
+
+// โหลดค่าเริ่มต้น
+updateButtonText();
+
+// ฟังก์ชันเมื่อกดปุ่มป้องกันพิเศษ
+if (button) {
+    button.addEventListener("click", function () {
+        const lifeElements = document.querySelectorAll('.life');
+
+        if (protectedSpecialHearts < lifeElements.length && remainingClicks > 0) {
+            lifeElements[protectedSpecialHearts].style.backgroundColor = 'purple';
+            lifeElements[protectedSpecialHearts].setAttribute("data-special-protected", "true");
+            protectedSpecialHearts++;
+
+            remainingClicks--;
+            localStorage.setItem("remainingClicks", remainingClicks);
+            localStorage.setItem("protectedSpecialHearts", protectedSpecialHearts);
+            updateButtonText();
+        }
+    });
+}
+
+
+
+
+
+doubleScoreButton.disabled = isDoubleScoreActive;
+
+
+document.getElementById("addLimitButton").addEventListener("click", function() {
+    let coins = parseInt(localStorage.getItem('coins')) || 0;
+    let cost = 50; // ราคาหักเหรียญ
+
+    if (coins >= cost) {
+        coins -= cost;
+        localStorage.setItem('coins', coins);
+        updateCoinDisplay();
+    } else {
+        alert("เหรียญไม่พอ!");
+    }
+    location.reload(); // รีเฟรชหน้าใหม่ทันที
+});
+// ฟังก์ชันเพิ่มจำนวนครั้ง (หน้าอื่นก็สามารถใช้ได้)
+if (addLimitButton) {
+    addLimitButton.addEventListener("click", function () {
+        remainingClicks += 1;
+        localStorage.setItem("remainingClicks", remainingClicks);
+    });
+}
+  </script>
+  
+
+
+
+</body>
+</html>

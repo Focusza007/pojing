@@ -1,0 +1,408 @@
+            /* กำหนดการตั้งค่าเริ่มต้นของตัวอักษรและการจัดตำแหน่ง */
+            body {
+                font-family: 'Mitr', sans-serif;
+            background-color: #121212; /* สีดำเข้ม */
+            color: white; /* สีตัวอักษร */
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            justify-content: center;
+            text-align: center;
+            user-select: none; /* ป้องกันการลาก */
+            -webkit-user-drag: none; /* ปิดการลากใน Safari */
+        }
+        h1 {
+            margin-top: 20px;
+            font-size: 2.5em;
+            color: #d1ff03; /* สีเขียวอ่อน */
+        }
+        /* การตั้งค่าให้กับส่วนควบคุม เช่น ปุ่ม และตัวเลือก */
+        #controls {
+            margin-top: 20px;
+        }
+        .home-button {
+            position: fixed;
+            top: 70px;
+            right: 20px;
+            background: linear-gradient(45deg, #ffcc00, #ff8800);
+            color: black;
+            padding: 12px 18px;
+            border-radius: 10px;
+            font-size: 18px;
+            font-weight: bold;
+            border: none;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.3s;
+            box-shadow: 0 4px 8px rgba(255, 200, 0, 0.5);
+        }
+
+        .home-button:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 12px rgba(255, 200, 0, 0.7);
+        }
+
+        .home-button:active {
+            transform: scale(0.95);
+            box-shadow: 0 2px 4px rgba(255, 200, 0, 0.4);
+        }
+       /* ปรับปรุงตาราง */
+#grid {
+    display: grid;
+    gap: 5px;
+    justify-content: center;
+    margin: 20px auto;
+    grid-template-columns: repeat(4, 60px);
+    grid-template-rows: repeat(4, 60px);
+    margin-bottom: 10px;
+    background-color: #1e1e1e;
+    padding: 10px;
+    border-radius: 15px;
+    box-shadow: 0 4px 10px rgba(255, 255, 255, 0.2);
+    cursor: pointer;
+}
+        /* สไตล์ของเซลล์ในตาราง */
+        .cell {
+            width: 60px;
+            height: 60px;
+            background-color: lightgray;
+            border: 2px solid #ddd;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            position: relative;
+            border-radius: 10px;
+            transition: background-color 0.2s, transform 0.1s;
+        }
+        .cell:hover {
+            transform: scale(1.01);
+        }
+        /* สไตล์สำหรับเซลล์ที่มีสีเตือน */
+        .cell.warning {
+            background-color: orange;
+        }
+
+        /* สไตล์สำหรับเซลล์ที่มีสีเขียว */
+        .cell.green {
+            background-color: green;
+        }
+        .cell.error {
+            background-color: red;
+            animation: blink 0.2s step-start 2;
+        }
+        /* การตั้งค่าให้กับการแสดงคะแนนและชีวิต */
+    
+
+        #levelSelect, button {
+            background-color: #1e1e1e;
+            color: white;
+            border: 1px solid white;
+            padding: 10px 15px;
+            border-radius: 8px;
+            font-size: 1em;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        #gameContainer {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        @keyframes blink {
+            50% {
+                opacity: 0;
+            }
+        }
+
+        #status {
+            display: flex;
+            justify-content: space-between;
+            width: 300px;
+            font-size: 1.5em;
+        }
+
+        #countdown {
+            position: absolute; /* กำหนดตำแหน่งแบบ absolute */
+            top: 50%; /* จัดให้อยู่กึ่งกลางแนวตั้ง */
+            left: 50%; /* จัดให้อยู่กึ่งกลางแนวนอน */
+            transform: translate(-50%, -50%); /* ปรับตำแหน่งให้กึ่งกลางพอดี */
+            font-size: 48px; /* ปรับขนาดตัวอักษร */
+            font-weight: bold; /* ทำให้ตัวอักษรหนา */
+            color: red; /* สีตัวอักษร */
+          
+            padding: 10px 20px; /* เพิ่มระยะห่างภายใน */
+            border-radius: 10px; /* ทำให้ขอบโค้งมน */
+        }
+        
+        #lives {
+            position: fixed; /* ทำให้ตำแหน่งอยู่กับที่ */
+            top: 10px; /* ระยะห่างจากขอบบน */
+            left: 10px; /* ระยะห่างจากขอบซ้าย */
+            display: flex;
+            flex-direction: column; /* เรียงจากบนลงล่าง */
+            align-items: center; /* จัดให้อยู่ตรงกลางในแนวแกนขวาง */
+            gap: 5px; /* ระยะห่างระหว่างหัวใจ */
+        }
+        .life {
+    width: 40px;
+    height: 40px;
+    background-color: #1e1e1e;
+    border: 2px solid white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    color: red;
+    transition: background-color 0.3s ease-in-out, transform 0.2s;
+}
+.life.lost {
+    background-color: #444;
+    transform: scale(0.8);
+    opacity: 0.6;
+}
+#coin-display {
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    background: linear-gradient(45deg, gold, orange);
+    color: black;
+    padding: 12px 18px;
+    border-radius: 10px;
+    font-size: 18px;
+    font-weight: bold;
+    box-shadow: 0 4px 6px rgba(255, 200, 0, 0.5);
+}
+
+        #reset-coin-btn {
+            background-color: #444;
+            color: white;
+            border: 1px solid white;
+            padding: 10px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        #reset-coin-btn:hover {
+            background-color: #666;
+        }
+        .image-container {
+    position: relative;
+    overflow: hidden;
+}
+
+/* การตั้งค่าของรูปภาพ */
+.img {
+    width: 250px;
+    height: auto;
+    animation: swingZoom 3s infinite ease-in-out;
+}
+
+/* สร้าง Animation เพื่อให้ภาพแกว่งและซูม */
+@keyframes swingZoom {
+    0% {
+        transform: rotate(0deg) scale(1);
+    }
+    25% {
+        transform: rotate(10deg) scale(1.1);
+    }
+    50% {
+        transform: rotate(0deg) scale(1);
+    }
+    75% {
+        transform: rotate(-10deg) scale(1.1);
+    }
+    100% {
+        transform: rotate(0deg) scale(1);
+    }
+}
+
+#summary-container {
+    text-align: center;
+    background-color: rgba(0, 0, 0, 0.9);
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.2);
+    width: 50%;
+    max-width: 600px;
+    margin: auto;
+    margin-top: 50px;
+}
+
+#summary-container h2 {
+    font-size: 2.5em;
+    color: #d1ff03; /* สีเขียวอ่อน */
+}
+
+#summary-container p {
+    font-size: 1.5em;
+    margin: 10px 0;
+}
+
+.summary-highlight {
+    font-size: 2em;
+    color: #ffcc00; /* สีทอง */
+    font-weight: bold;
+}
+
+#summary-buttons {
+    margin-top: 20px;
+}
+
+.summary-btn {
+    background-color: #1e1e1e;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 8px;
+    border: 1px solid white;
+    font-size: 1.2em;
+    cursor: pointer;
+    margin: 5px;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+.summary-btn:hover {
+    background-color: #444;
+    transform: scale(1.05);
+}
+/* เพิ่มเอฟเฟกต์เงาและการกดปุ่ม */
+button, .summary-btn {
+    background-color: #1e1e1e;
+    color: white;
+    border: 1px solid white;
+    padding: 10px 15px;
+    border-radius: 8px;
+    font-size: 1em;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s, box-shadow 0.3s;
+    box-shadow: 0 4px 6px rgba(255, 255, 255, 0.2);
+}
+
+button:hover, .summary-btn:hover {
+    background-color: #444;
+    transform: scale(1.05);
+    box-shadow: 0 6px 10px rgba(255, 255, 255, 0.3);
+}
+
+button:active, .summary-btn:active {
+    transform: scale(0.95);
+    box-shadow: 0 2px 4px rgba(255, 255, 255, 0.2);
+}
+.message {
+    position: fixed;
+    top: 60%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: black;
+    color: gold;
+    font-size: 24px;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(255, 255, 255, 0.5);
+    opacity: 0;
+    animation: fadeMove 2s ease-in-out forwards;
+}
+
+@keyframes fadeMove {
+    0% {
+        opacity: 0;
+        transform: translate(-50%, 10%);
+    }
+    50% {
+        opacity: 1;
+        transform: translate(-50%, 0);
+    }
+    100% {
+        opacity: 0;
+        transform: translate(-50%, -10%);
+    }
+}
+
+.heart {
+    width: 40px;
+    height: 40px;
+    background: red;
+    clip-path: polygon(50% 0%, 100% 35%, 85% 100%, 50% 80%, 15% 100%, 0% 35%);
+    margin: 5px;
+    opacity: 0;
+    transform: scale(0);
+    animation: fadeIn 0.5s ease-out forwards;
+}
+@keyframes fadeIn {
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+.trap-blink {
+    animation: blink 0.5s infinite alternate;
+}
+
+@keyframes blink {
+    from { background-color: transparent; }
+    to { background-color: rgb(255, 0, 0); }
+}
+
+.trap-active {
+    background-color: rgb(128, 0, 0);
+}
+.red{
+    font-size: 30px;
+    color: rgb(255, 0, 0);
+}
+.Green{
+    font-size: 30px;
+    color: rgb(0, 255, 94);
+    
+}
+.Blue{
+    font-size: 30px;
+    color: rgb(0, 0, 255);
+}
+.Orange{
+    font-size: 30px;
+    color: rgb(255, 170, 0);
+}
+.Black{
+    font-size: 40px;
+    font-weight: bold;
+}
+.font-size_40px{
+    font-size: 40px;
+}
+  /* ปุ่มวงกลม */
+  #toggleButton {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: #4CAF50;
+    border: none;
+    color: white;
+    font-size: 20px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.3s ease; /* เพิ่มเอฟเฟกต์การหมุน */
+  }
+
+  /* หมุนลูกศรลง */
+  #toggleButton.rotate-down {
+    transform: rotate(180deg);
+  }
+
+  /* ส่วนแสดงผล */
+  #values {
+    margin-top: 10px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    display: none; /* ซ่อนเริ่มต้น */
+  }
