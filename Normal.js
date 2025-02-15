@@ -254,21 +254,17 @@ function setLevel(level) {
     localStorage.setItem('HIDE_TIME', HIDE_TIME);
     localStorage.setItem('SHOW_CLL', SHOW_CLL);
     localStorage.setItem('level', level);
-    localStorage.setItem('maxScorePerLevel', maxScorePerLevel); // เก็บค่า maxScorePerLevel
+   // เก็บค่า maxScorePerLevel
 
     updateDisplay();
 }
 
-// โหลดค่า maxScorePerLevel จาก localStorage ถ้ามี
-maxScorePerLevel = parseInt(localStorage.getItem('maxScorePerLevel')) || 1;
-updateDisplay();
-        function resetSettings() {
-           
 
-            SHOW_TIME = 0.5;
-            HIDE_TIME = 0.5;
-            SHOW_CLL = 0.3;
-            coinsEarned = 5;
+          coinsEarned = 35;
+          SHOW_TIME = 0.6;
+          HIDE_TIME = 0.6;
+          SHOW_CLL = 0.6;
+          maxScorePerLevel = 40; // ด่านเริ่มต้น
 
             document.getElementById('levelSelect').value = "1";
             localStorage.setItem('SHOW_TIME', SHOW_TIME);
@@ -276,10 +272,9 @@ updateDisplay();
     localStorage.setItem('SHOW_CLL', SHOW_CLL);
     localStorage.setItem('level', "1");
     localStorage.setItem('coinsEarned', coinsEarned);
-
+    localStorage.setItem('maxScorePerLevel', maxScorePerLevel); 
             updateDisplay();
-        }
-
+    
         document.getElementById('levelSelect').addEventListener('change', function() {
             setLevel(this.value);
         });

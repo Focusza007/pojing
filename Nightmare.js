@@ -218,36 +218,36 @@ document.getElementById('levelSelect').value = level;
 function setLevel(level) {
     if (level === "2") {
         coinsEarned = 600;
-        SHOW_TIME = 0.7;
-        HIDE_TIME = 0.5;
-        SHOW_CLL = 0.5;
+        SHOW_TIME = 0.5;
+      HIDE_TIME = 0.5;
+      SHOW_CLL = 0.5;
         maxScorePerLevel = 170; // ด่าน 2
     } else if (level === "3") {
         coinsEarned = 700;
-        SHOW_TIME = 0.7;
-        HIDE_TIME = 0.5;
-        SHOW_CLL = 0.4;
+        SHOW_TIME = 0.5;
+      HIDE_TIME = 0.5;
+      SHOW_CLL = 0.4;
         maxScorePerLevel = 180; // ตัวอย่างสำหรับด่าน 3
     } else if (level === "4") {
         coinsEarned = 800;
-        SHOW_TIME = 0.6;
-        HIDE_TIME = 0.6;
-        SHOW_CLL = 0.4;
+        SHOW_TIME = 0.4;
+      HIDE_TIME = 0.4;
+      SHOW_CLL = 0.4;
         maxScorePerLevel = 190; // ตัวอย่างสำหรับด่าน 4
     } else if (level === "5") {
-        coinsEarned = 1500;
-        SHOW_TIME = 0.6;
-        HIDE_TIME = 0.4;
-        SHOW_CLL = 0.4;
+        coinsEarned = 900;
+        SHOW_TIME = 0.4;
+      HIDE_TIME = 0.4;
+      SHOW_CLL = 0.3;
         maxScorePerLevel = 200; // ตัวอย่างสำหรับด่าน 5
     } else {
         coinsEarned = 500;
-        SHOW_TIME = 0.8;
-        HIDE_TIME = 0.5;
-        SHOW_CLL = 0.4;
+        SHOW_TIME = 0.6;
+      HIDE_TIME = 0.6;
+      SHOW_CLL = 0.6;
         maxScorePerLevel = 160; // ด่านเริ่มต้น
     }
-
+   
     // บันทึกค่าไว้ใน localStorage
     localStorage.setItem('coinsEarned', coinsEarned);
     localStorage.setItem('SHOW_TIME', SHOW_TIME);
@@ -260,15 +260,13 @@ function setLevel(level) {
 }
 
 // โหลดค่า maxScorePerLevel จาก localStorage ถ้ามี
-maxScorePerLevel = parseInt(localStorage.getItem('maxScorePerLevel')) || 1;
-updateDisplay();
-        function resetSettings() {
-           
 
-            SHOW_TIME = 0.5;
-            HIDE_TIME = 0.5;
-            SHOW_CLL = 0.3;
-            coinsEarned = 5;
+
+coinsEarned = 500;
+SHOW_TIME = 0.6;
+HIDE_TIME = 0.6;
+SHOW_CLL = 0.6;
+maxScorePerLevel = 160;
 
             document.getElementById('levelSelect').value = "1";
             localStorage.setItem('SHOW_TIME', SHOW_TIME);
@@ -276,9 +274,9 @@ updateDisplay();
     localStorage.setItem('SHOW_CLL', SHOW_CLL);
     localStorage.setItem('level', "1");
     localStorage.setItem('coinsEarned', coinsEarned);
-
+    localStorage.setItem('maxScorePerLevel', maxScorePerLevel); 
+    
             updateDisplay();
-        }
 
         document.getElementById('levelSelect').addEventListener('change', function() {
             setLevel(this.value);

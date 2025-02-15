@@ -221,31 +221,31 @@ function setLevel(level) {
         SHOW_TIME = 0.5;
         HIDE_TIME = 0.1;
         SHOW_CLL = 0.3;
-        maxScorePerLevel = 5000; // ด่าน 2
+        maxScorePerLevel = 3000; // ด่าน 2
     } else if (level === "3") {
         coinsEarned = 15000;
         SHOW_TIME = 0.1;
         HIDE_TIME = 0.1;
         SHOW_CLL = 0.5;
-        maxScorePerLevel = 7000; // ตัวอย่างสำหรับด่าน 3
+        maxScorePerLevel = 5555; // ตัวอย่างสำหรับด่าน 3
     } else if (level === "4") {
         coinsEarned = 20000;
         SHOW_TIME = 0.5;
         HIDE_TIME = 0.5;
         SHOW_CLL = 0.2;
-        maxScorePerLevel = 10000; // ตัวอย่างสำหรับด่าน 4
+        maxScorePerLevel = 7000; // ตัวอย่างสำหรับด่าน 4
     } else if (level === "5") {
         coinsEarned = 100000;
         SHOW_TIME = 0.1;
         HIDE_TIME = 0.1;
         SHOW_CLL = 0.1;
-        maxScorePerLevel = 30000; // ตัวอย่างสำหรับด่าน 5
+        maxScorePerLevel = 10000; // ตัวอย่างสำหรับด่าน 5
     } else {
         coinsEarned = 6000;
         SHOW_TIME = 0.1;
         HIDE_TIME = 0.5;
         SHOW_CLL = 0.5;
-        maxScorePerLevel = 3000; // ด่านเริ่มต้น
+        maxScorePerLevel = 1000; // ด่านเริ่มต้น
     }
 
     // บันทึกค่าไว้ใน localStorage
@@ -260,15 +260,12 @@ function setLevel(level) {
 }
 
 // โหลดค่า maxScorePerLevel จาก localStorage ถ้ามี
-maxScorePerLevel = parseInt(localStorage.getItem('maxScorePerLevel')) || 1;
-updateDisplay();
-        function resetSettings() {
-           
 
-            SHOW_TIME = 0.5;
-            HIDE_TIME = 0.5;
-            SHOW_CLL = 0.3;
-            coinsEarned = 5;
+          coinsEarned = 6000;
+          SHOW_TIME = 0.1;
+          HIDE_TIME = 0.5;
+          SHOW_CLL = 0.5;
+          maxScorePerLevel = 1000; // ด่านเริ่มต้น
 
             document.getElementById('levelSelect').value = "1";
             localStorage.setItem('SHOW_TIME', SHOW_TIME);
@@ -276,9 +273,9 @@ updateDisplay();
     localStorage.setItem('SHOW_CLL', SHOW_CLL);
     localStorage.setItem('level', "1");
     localStorage.setItem('coinsEarned', coinsEarned);
+    localStorage.setItem('maxScorePerLevel', maxScorePerLevel); // เก็บค่า maxScorePerLevel
 
             updateDisplay();
-        }
 
         document.getElementById('levelSelect').addEventListener('change', function() {
             setLevel(this.value);
